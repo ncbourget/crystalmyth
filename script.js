@@ -1,67 +1,60 @@
-const pages = document.querySelectorAll('.page');
-const zoom = document.querySelector('#zoom');
-const basket = document.querySelector('#basket');
-const checkout = {};
+const listings = document.querySelector('#listings');
+const status = document.querySelector('#status');
+let lastCheck;
 
-function turnPage() {
-  let name = location.hash.slice(1) || 'home';
-  if (name === 'projects') name = 'projects-1';
-  if (!document.getElementById(name)?.classList.contains('page')) name = 'home';
-  pages.forEach(page => { page.hidden = page.id !== name; });
-  document.querySelectorAll('nav a').forEach(link => {
-    if (link.hash === '#' + name) link.setAttribute('aria-current', 'page');
-    else link.removeAttribute('aria-current');
-  });
-  document.title = name === 'home' ? 'Crystal Myth' : name.replaceAll('-', ' ') + ' — Crystal Myth';
-  window.scrollTo(0, 0);
+function depopLink(value) {
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' && url.hostname === 'www.depop.com' && url.pathname.startsWith('/products/');
+  } catch {
+    return false;
+  }
 }
 
-window.addEventListener('hashchange', turnPage);
-turnPage();
-
-document.querySelector('#cart-link').addEventListener('click', () => basket.showModal());
-document.querySelectorAll('dialog .close').forEach(button => {
-  button.addEventListener('click', () => button.closest('dialog').close());
-});
-document.querySelectorAll('dialog').forEach(dialog => {
-  dialog.addEventListener('click', event => {
-    if (event.target === dialog) {
-      const box = dialog.getBoundingClientRect();
-      if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) dialog.close();
+async function loadShop() {
+  try {
+    const response = await fetch('api/listings.json', { cache: 'no-store' });
+    if (!response.ok) throw new Error('Feed unavailable');
+    const shop = await response.json();
+    if (shop.shop !== 'w4vyd4vy' || !Array.isArray(shop.items)) throw new Error('Invalid feed');
+    if (!shop.updatedAt) {
+      status.textContent = 'See the latest listings in the Depop shop above.';
+      return;
     }
-  });
-});
-document.querySelectorAll('.enlarge').forEach(button => {
-  button.addEventListener('click', () => {
-    zoom.querySelector('img').src = button.querySelector('img').src;
-    zoom.querySelector('img').alt = button.querySelector('img').alt;
-    zoom.showModal();
-  });
-});
-document.querySelectorAll('.slideshow').forEach(show => {
-  const photos = show.querySelectorAll('.picture');
-  let photo = 0;
-  const controls = document.createElement('div');
-  controls.className = 'slide-controls';
-  controls.innerHTML = '<button aria-label="Previous photo">←</button><span aria-live="polite">1 / ' + photos.length + '</span><button aria-label="Next photo">→</button>';
-  show.append(controls);
-  controls.querySelectorAll('button').forEach((button, side) => {
-    button.addEventListener('click', () => {
-      photo = (photo + (side ? 1 : -1) + photos.length) % photos.length;
-      photos.forEach((picture, number) => { picture.style.display = number === photo ? 'block' : 'none'; });
-      controls.querySelector('span').textContent = (photo + 1) + ' / ' + photos.length;
-    });
-  });
-});
-document.querySelectorAll('.buy').forEach(box => {
-  const shirt = box.closest('.page').id;
-  const link = document.createElement('a');
-  link.href = checkout[shirt] || 'https://www.instagram.com/crystalmyth.xyz';
-  link.textContent = checkout[shirt] ? 'Buy this shirt' : 'Ask about this shirt ↗';
-  box.append(link);
-  const back = document.createElement('a');
-  back.href = '#home';
-  back.className = 'back';
-  back.textContent = '← Shop';
-  box.closest('.page').prepend(back);
-});
+    const checked = new Date(shop.updatedAt);
+    if (!Number.isFinite(checked.getTime())) throw new Error('Invalid date');
+    const cards = document.createDocumentFragment();
+    for (const item of shop.items) {
+      if (!depopLink(item.url)) continue;
+      const card = document.createElement('a');
+      card.className = 'listing';
+      card.href = item.url;
+      if (typeof item.image === 'string' && item.image.startsWith('https://')) {
+        const image = document.createElement('img');
+        image.src = item.image;
+        image.alt = item.title;
+        image.loading = 'lazy';
+        card.append(image);
+      }
+      const title = document.createElement('h2');
+      title.textContent = item.title;
+      const price = document.createElement('p');
+      price.textContent = new Intl.NumberFormat(undefined, { style: 'currency', currency: item.currency }).format(item.price);
+      card.append(title, price);
+      cards.append(card);
+    }
+    listings.replaceChildren(cards);
+    lastCheck = checked;
+    const old = Date.now() - checked.getTime() > 2 * 60 * 60 * 1000;
+    const count = listings.children.length;
+    status.textContent = (count ? count + ' listing' + (count === 1 ? '' : 's') : 'No active listings at last check') + ' · ' + (old ? 'Last checked ' : 'Checked ') + checked.toLocaleString() + '. Confirm availability on Depop.';
+  } catch {
+    status.textContent = lastCheck
+      ? 'Could not refresh. Showing listings checked ' + lastCheck.toLocaleString() + '. Confirm availability on Depop.'
+      : 'Listings are unavailable right now. Visit the Depop shop above.';
+  }
+}
+
+loadShop();
+setInterval(() => { if (!document.hidden) loadShop(); }, 60000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) loadShop(); });
