@@ -1,0 +1,89 @@
+@font-face {
+  font-family: Stencil;
+  src: url('assets/stencil.woff') format('woff');
+  font-display: swap;
+}
+:root { color-scheme: dark; --pink: #ff0095; }
+* { box-sizing: border-box; }
+html { background: #000; }
+body { margin: 0; padding: 0 2.1vw 2.1vw; background: #000; color: #d7d7d7; font: 700 2vw/1.2 Arial, Helvetica, sans-serif; }
+::selection { background: var(--pink); color: #000; }
+a, button { color: var(--pink); }
+a:active, button:active { opacity: .7; }
+button { font: inherit; cursor: pointer; }
+a:focus-visible, button:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+header { display: grid; grid-template-columns: 11fr 1fr; gap: 1.4vw; margin-bottom: 2.4vw; }
+.logo { display: block; }
+.logo img { display: block; width: 100%; height: auto; }
+nav { padding-top: 17vw; display: flex; flex-direction: column; align-items: flex-start; gap: 2.8vw; overflow-wrap: anywhere; }
+nav a, nav button { line-height: 1.1; }
+nav button { padding: 0; background: none; border: 0; text-decoration: underline; }
+[hidden] { display: none !important; }
+h1 { margin: 0; font: bold 18.14vw/1 Helvetica, Arial, sans-serif; color: var(--pink); overflow-wrap: anywhere; }
+h2 { margin: 0; color: #fff; font: bold 9.43vw/1.1 Helvetica, Arial, sans-serif; }
+p { margin: 0 0 1em; }
+.columns { display: flex; gap: 1.4vw; }
+.column { flex: 1; min-width: 0; }
+#home > .intro { gap: 0; }
+#home > .intro .column:first-child { flex: 7; }
+#home > .intro .column:last-child { flex: 5; }
+.picture { margin: 0; }
+.picture img { width: 100%; height: auto; display: block; }
+.picture a { text-decoration: none; }
+figcaption { margin-top: .5em; font: bold 1.93vw/1.2 Times, 'Times New Roman', serif; color: var(--pink); }
+.enlarge { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+hr { height: 1px; background: var(--pink); border: 0; margin: .7vw 0; }
+.typewriter, .typewriter-purple { display: block; font: 400 2vw/1.2 Stencil, 'Times New Roman', serif; }
+.typewriter-purple { color: var(--pink); }
+.ticker { overflow: hidden; background: var(--pink); color: #000; font: 400 1.71vw/1.2 Stencil, 'Times New Roman', serif; }
+.ticker-strip { width: max-content; white-space: nowrap; animation: crawl 70s linear infinite; }
+.ticker:hover .ticker-strip { animation-play-state: paused; }
+@keyframes crawl { to { transform: translateX(-50%); } }
+#projects-1 > .columns { margin-bottom: 4vw; }
+#projects-1 h1 { font-size: 10.5vw; }
+#myth > .columns { margin-bottom: 3vw; }
+.archive { position: relative; height: 100vw; margin-top: 4vw; }
+.archive .picture { position: absolute; }
+.slideshow { position: relative; }
+.slideshow .picture:not(:first-child) { display: none; }
+.slideshow .slide-controls { display: flex; justify-content: space-between; margin-top: .7em; }
+.slide-controls button { background: transparent; border: 0; padding: 0 .25em; font-size: 1.6em; }
+.buy { margin-top: 1em; font: bold 2.5vw Times, serif; }
+.buy a { display: inline-block; padding: .5em 1em; border: 1px solid var(--pink); border-radius: 3em; }
+.back { display: inline-block; margin: 0 0 1em; }
+dialog { background: #000; color: #fff; border: 1px solid var(--pink); max-width: 90vw; max-height: 94vh; padding: 3vw; }
+dialog::backdrop { background: rgb(0 0 0 / .9); }
+dialog .close { position: absolute; right: 10px; top: 4px; background: #000; border: 0; font: 32px Arial; z-index: 1; }
+#zoom { padding: 0; border: 0; }
+#zoom img { display: block; max-width: 88vw; max-height: 90vh; object-fit: contain; }
+#basket { width: 560px; font-size: 18px; }
+#basket h2 { font-size: 64px; margin-bottom: 25px; }
+@media (min-width: 1600px) { body { font-size: 28px; } }
+@media (max-width: 600px) {
+  body { padding: 0 4vw 4vw; font-size: 16px; }
+  header { display: block; margin-bottom: 5vw; }
+  nav { padding: 2vw 0; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 10px; font-size: 12px; }
+  .columns:not(.stay) { flex-direction: column; gap: 20px; }
+  .columns.stay { gap: 2vw; }
+  #home > .intro { flex-direction: column; }
+  h1 { font-size: 20vw; overflow-wrap: normal; }
+  h2 { font-size: 14vw; }
+  #home h1 { font-size: 20vw; margin-bottom: 18px; }
+  #home h2 { margin-top: 12px; }
+  .typewriter, .typewriter-purple { font-size: 16px; }
+  .ticker { font-size: 13px; }
+  figcaption { font-size: 10px; }
+  #projects-1 h1 { font-size: 17vw; }
+  #myth .columns { margin-bottom: 24px; }
+  #myth .columns.stay { flex-direction: column; gap: 24px; }
+  .buy { font-size: 20px; }
+  hr { margin: 12px 0; }
+  .archive { height: 120vw; }
+  .slideshow { max-width: 360px; }
+}
+@media (prefers-reduced-motion: reduce) { .ticker-strip { animation: none; } }
+.logo { padding-top: 3vw; }
+nav { width: 6.5vw; font-size: 1.85vw; }
+@media (max-width: 600px) {
+  nav { width: auto; font-size: 12px; }
+}
