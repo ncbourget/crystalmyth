@@ -15,15 +15,15 @@
 * { box-sizing: border-box; }
 html { background: #000; color-scheme: dark; }
 body { margin: 0; background: #000; color: #fff; }
-main { padding: 3.2vw 3.45vw 7vw; }
+main { padding: 2.304vw 2.484vw 5.04vw; }
 header { width: max-content; }
-p { margin: 0; font: 400 1.2vw/1 'Courier New', monospace; }
-h1 { margin: 0; font: 400 3.7vw/.865 Grouch, Georgia, serif; white-space: nowrap; transform: translateY(-.12em); }
+p { margin: 0; font: 400 .864vw/1 'Courier New', monospace; }
+h1 { margin: 0; font: 400 2.664vw/.865 Grouch, Georgia, serif; white-space: nowrap; transform: translateY(-.12em); }
 .xyz { text-align: right; transform: translate(.25em, -.4em); }
-.drawing { display: block; width: 25vw; height: auto; margin-top: 3.7vw; }
+.drawing { display: block; width: 18vw; height: auto; margin-top: 2.664vw; }
 @media (max-width: 600px) {
-  main { padding: 28px 24px 48px; }
-  p { font-size: 14px; }
-  h1 { font-size: clamp(36px, 10vw, 60px); }
-  .drawing { width: min(76vw, 360px); margin-top: 48px; }
+  main { padding: 4.42vw 3.79vw 7.58vw; }
+  p { font-size: 2.21vw; }
+  h1 { font-size: 8.24vw; }
+  .drawing { width: 60vw; margin-top: 7.58vw; }
 }
