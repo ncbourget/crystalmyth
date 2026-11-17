@@ -1,0 +1,31 @@
+@font-face {
+  font-family: Stncl;
+  src: url('assets/typeface/stencil.woff') format('woff');
+  font-display: swap;
+}
+@font-face {
+  font-family: Philli;
+  src: url('assets/typeface/philli-boo.ttf') format('truetype');
+  font-display: swap;
+}
+html, body { background: #000; }
+body { margin: 0; color: #d7d7d7; }
+::selection { background: #ff0095; color: #000; }
+main { padding: 0 3vw 4vw; font: 400 2.7vw/1.2 Stncl, Impact, sans-serif; }
+img { display: block; max-width: 50%; height: auto; }
+.top { display: flex; align-items: flex-end; gap: 2vw; margin: 2vw 0 3.5vw; }
+.top img { max-width: none; }
+.top img:first-child { width: 24vw; }
+.top img:last-child { flex: 1; min-width: 0; }
+.col + .col { margin-top: 1.2em; }
+.row { margin-bottom: 1.2em; }
+.tw, .pk, .hnt { display: block; }
+.tw { color: #e7e7e7; }
+.pk { color: #ff0095; }
+.hnt { font: 4.6vw/1.2 Philli, serif; color: #ffc500; }
+@media (max-width: 600px) {
+  main { padding: 0 4vw 6vw; font-size: 5vw; }
+  img { max-width: 80%; }
+  .top img:first-child { width: 30vw; }
+  .hnt { font-size: 7vw; }
+}
